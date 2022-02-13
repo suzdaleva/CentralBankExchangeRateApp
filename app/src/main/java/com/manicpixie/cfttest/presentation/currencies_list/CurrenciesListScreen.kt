@@ -2,11 +2,9 @@ package com.manicpixie.cfttest.presentation.currencies_list
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -67,19 +65,24 @@ fun CurrenciesListScreen(
     }
 
 
+
     AnimatedVisibility(
         visible = backgroundExpanded,
         enter = expandVertically(
             animationSpec = tween(durationMillis = 500),
             expandFrom = Alignment.Top
         ),
-        exit = shrinkVertically(animationSpec = tween(durationMillis = 500))
+        exit = shrinkVertically(
+            animationSpec =
+            tween(durationMillis = 400)
+        )
+
     ) {
         Box(
             modifier = Modifier
                 .graphicsLayer {
-                    if(configuration != Configuration.ORIENTATION_LANDSCAPE)
-                    translationY -= backScroll.value
+                    if (configuration != Configuration.ORIENTATION_LANDSCAPE)
+                        translationY -= backScroll.value
                 }
                 .drawColoredShadow(
                     alpha = 0.5f,
@@ -98,6 +101,8 @@ fun CurrenciesListScreen(
     }
     AnimatedVisibility(
         visible = !backgroundExpanded,
+        enter = fadeIn(animationSpec = tween(durationMillis = 50)),
+        exit = fadeOut(animationSpec = tween(durationMillis = 50)),
 
     ) {
 
@@ -165,18 +170,21 @@ fun CurrenciesListScreen(
                     })
 
             }
-            if (contentState.isLoading && queryState.query.isBlank() && !backgroundExpanded) {
+            if (contentState.isLoading && queryState.query.isBlank() && !backgroundExpanded)  {
                 items(count = 6) { item ->
                     ShimmerAnimation()
                 }
             }
+
             if (contentState.currencies.isNotEmpty()) {
+                currentCurrenciesOrder.value = contentState.currenciesOrder
                 backgroundExpanded = false
                 sortedListState.value = contentState.currencies
                 items(contentState.currencies)
                 { currency ->
                     CurrencyItem(currency = currency)
                 }
+
             }
             if (!contentState.isLoading
                 && (sortedListState.value.isEmpty() || contentState.currencies.isEmpty()) && queryState.query.isNotBlank()
