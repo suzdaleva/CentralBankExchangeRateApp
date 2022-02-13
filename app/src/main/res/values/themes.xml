@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.CFTTest" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/gradient</item>
+        <item name="colorPrimaryVariant">@color/gradient</item>
+        <item name="android:forceDarkAllowed" tools:ignore="NewApi">false</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.CFTTest.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:forceDarkAllowed" tools:ignore="NewApi">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.CFTTest.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.CFTTest.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Курс валют ЦБ</string>
+    <string name="converter">КОНВЕРТЕР</string>
+    <string name="input_sum">Введите сумму</string>
+    <string name="error_message">УПС, КАЖЕТСЯ,\nЧТО-ТО ПОШЛО\nНЕ ТАК</string>
+    <string name="retry">Попробовать снова</string>
+    <string name="empty_search_message">МЫ НИЧЕГО НЕ\nНАШЛИ</string>
+    <string name="try_another_request">Попробуйте другой запрос</string>
+    <string name="exchange_rate">КУРС ВАЛЮТ</string>
+    <string name="central_bank">Центрального Банка Российской Федерации</string>
+</resources>
