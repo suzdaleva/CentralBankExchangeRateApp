@@ -13,10 +13,8 @@ import com.manicpixie.cfttest.domain.util.CurrenciesOrder
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.*
 
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +35,7 @@ class CurrenciesListViewModel @Inject constructor(
     private val _contentState = mutableStateOf(CurrenciesListState())
     val contentState: State<CurrenciesListState> = _contentState
 
-    private fun getCurrencies(currenciesOrder: CurrenciesOrder) {
+    fun getCurrencies(currenciesOrder: CurrenciesOrder) {
         cancelJob()
         job = getCurrenciesUseCase(currenciesOrder).onEach { result ->
             when (result) {
@@ -92,13 +90,14 @@ class CurrenciesListViewModel @Inject constructor(
                         CurrenciesListState(error = result.message ?: "Unknown error")
                 }
                 is Resource.Loading -> {
-                    _contentState.value = CurrenciesListState(isLoading = true)
                 }
 
             }
 
         }.cancellable().launchIn(viewModelScope)
     }
+
+
 
 
     fun onEvent(event: CurrenciesListEvent) {

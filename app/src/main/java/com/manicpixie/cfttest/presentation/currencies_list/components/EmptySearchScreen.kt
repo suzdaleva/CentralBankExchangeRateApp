@@ -38,10 +38,10 @@ fun EmptySearchScreen(
     AnimatedVisibility(
         visible = visible,
         enter = expandVertically(
-            animationSpec = tween(durationMillis = 400),
+            animationSpec = tween(durationMillis = 500),
             expandFrom = Alignment.Top
         ),
-        exit = shrinkVertically(animationSpec = tween(durationMillis = 400))
+        exit = shrinkVertically(animationSpec = tween(durationMillis = 500))
     ) {
         Column(
             modifier = Modifier

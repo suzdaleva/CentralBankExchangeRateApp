@@ -54,7 +54,12 @@ fun MainScreen(
     Scaffold(isFloatingActionButtonDocked = true, scaffoldState = scaffoldState, floatingActionButton = {
         FloatingActionButton(
             elevation = FloatingActionButtonDefaults.elevation(0.dp),
-            onClick = { if(currentScreenIndex.value == 0) currenciesListViewModel.searchCurrencies(queryState.query, contentState.currenciesOrder)
+            onClick = { if(currentScreenIndex.value == 0) {
+                if(currenciesListViewModel.contentState.value.currencies.isNotEmpty()) {
+                    currenciesListViewModel.getCurrencies(contentState.currenciesOrder)
+                } else
+                currenciesListViewModel.searchCurrencies(queryState.query, contentState.currenciesOrder)}
+
                  else if(converterViewModel.inputValue.value.query.isNotBlank()) converterViewModel.onEvent(ConverterEvent.Calculate)
                       },
             shape = CircleShape,
