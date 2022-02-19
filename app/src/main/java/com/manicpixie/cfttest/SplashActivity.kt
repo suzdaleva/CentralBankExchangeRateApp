@@ -44,7 +44,7 @@ class SplashActivity : ComponentActivity() {
                         scope.launch{
 
                             backgroundAnimatable.animateTo(targetValue = Color(0xFF9E00FF), animationSpec = tween(
-                                durationMillis = 150
+                                durationMillis = 100
                             ))
                         }
                         Image(painter = painterResource(id = R.drawable.splash_icon), contentDescription = "Splash",
@@ -55,7 +55,7 @@ class SplashActivity : ComponentActivity() {
         }
         val activity = this
         lifecycleScope.launch(Dispatchers.Main){
-            delay(2500)
+            delay(2000)
             startActivity(Intent(activity, MainActivity::class.java))
             finish()
         }

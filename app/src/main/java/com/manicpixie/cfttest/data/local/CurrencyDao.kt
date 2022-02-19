@@ -18,6 +18,9 @@ interface CurrencyDao {
 
     @Query("SELECT * FROM currencyentity WHERE name = :key")
     suspend fun getCurrencyByName(key: String): CurrencyEntity
+
+    @Query("SELECT count(*) FROM currencyentity")
+    suspend fun numberOfEntries(): Int
 }
 
 

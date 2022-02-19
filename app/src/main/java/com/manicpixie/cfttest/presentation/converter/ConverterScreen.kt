@@ -54,7 +54,7 @@ fun ConverterScreen(
 
     val suggestions : List<String> =  Constants.currenciesNames.values.map { it[0] }
 
-    var selectedText by rememberSaveable { mutableStateOf("Доллар США") }
+    var selectedText  = viewModel.currentCurrency.value.name
 
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
@@ -65,6 +65,8 @@ fun ConverterScreen(
     val currentCurrencyState = viewModel.currentCurrency.value
 
     val inputValueState = viewModel.inputValue.value
+    
+    val isDatabaseEmpty = viewModel.isDatabaseEmpty.value
 
     Box(
         modifier = Modifier
@@ -73,7 +75,7 @@ fun ConverterScreen(
             .padding(bottom = 66.dp)
     ) {
         AnimatedVisibility(
-            visible = expandBackground,
+            visible = expandBackground && !isDatabaseEmpty,
             enter = expandVertically(
                 animationSpec = tween(durationMillis = 400),
                 expandFrom = Alignment.Top
@@ -141,7 +143,6 @@ fun ConverterScreen(
                                 .height(40.dp)
                                 .fillMaxWidth()
                                 .onGloballyPositioned { coordinates ->
-                                    //This value is used to assign to the DropDown the same width
                                     textFieldSize = coordinates.size.toSize()
                                 }
                                 .clip(RoundedCornerShape(20.dp))
@@ -209,42 +210,109 @@ fun ConverterScreen(
                 isHintVisible = false,
                 enabled = false,
                 onFocusChange = {}, onValueChange = {}, currencyName = Constants.currenciesNames[currentCurrencyState.charCode]!![2])
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 432.dp)
-        ) {
-
-            Column(modifier = Modifier
-                .padding(start = 20.dp)
-                .align(Alignment.TopStart),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
-            Text(
-                text = "1 ${currentCurrencyState.charCode} = " + "%.3f".format(currentCurrencyState.value).replace(',', '.') + " RUB",
-                style = TextStyle(
-                    fontFamily = montserratFont,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    fontSize = dpToSp(dp = 14.dp),
-                    letterSpacing = 0.04.em,
-                ),
-                modifier = Modifier.padding(top = 8.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.graph),
-                contentDescription = "Graph",
-                modifier = Modifier.padding(top = 13.dp)
-            )}
-            Image(
-                painter = painterResource(
-                    id = R.drawable.hand_with_money
-                ), contentDescription = null,
+            Box(
                 modifier = Modifier
-                    .size(270.dp)
-                    .align(Alignment.Center)
-            )
+                    .fillMaxWidth()
+                    .padding(top = 432.dp)
+            ) {
+
+                Column(modifier = Modifier
+                    .padding(start = 20.dp)
+                    .align(Alignment.TopStart),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center) {
+                    Text(
+                        text = "1 ${currentCurrencyState.charCode} = " + "%.3f".format(currentCurrencyState.value).replace(',', '.') + " RUB",
+                        style = TextStyle(
+                            fontFamily = montserratFont,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White,
+                            fontSize = dpToSp(dp = 14.dp),
+                            letterSpacing = 0.04.em,
+                        ),
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.graph),
+                        contentDescription = "Graph",
+                        modifier = Modifier.padding(top = 13.dp)
+                    )}
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.hand_with_money
+                    ), contentDescription = null,
+                    modifier = Modifier
+                        .size(270.dp)
+                        .align(Alignment.Center)
+                )
+            }
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .verticalScroll(state = ScrollState(0))
+            .fillMaxSize()
+            .padding(bottom = 66.dp)
+    ) {
+        AnimatedVisibility(
+            visible = expandBackground && isDatabaseEmpty,
+            enter = expandVertically(
+                animationSpec = tween(durationMillis = 400),
+                expandFrom = Alignment.Top
+            ),
+            exit = shrinkVertically(animationSpec = tween(durationMillis = 400))
+        ) {
+            Box(
+                modifier = Modifier
+                    .drawColoredShadow(
+                        alpha = 0.5f,
+                        shadowRadius = 20.dp,
+                        color = Color(0xFF6100FF),
+                        shape = "rectangle",
+                        borderRadius = 63.dp
+                    )
+                    .fillMaxWidth()
+                    .height(540.dp)
+                    .clip(RoundedCornerShape(0.dp, 0.dp, 0.dp, 63.dp))
+                    .background(
+                        brush = backgroundGradient
+                    )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 50.dp),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        textAlign = TextAlign.Start,
+                        text = stringResource(id = R.string.converter_error_message),
+                        style = TextStyle(
+                            fontFamily = montserratFont,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            fontSize = dpToSp(dp = 24.dp),
+                        ),
+                        modifier = Modifier.padding(start = 20.dp)
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 20.dp)
+                            .clickable { },
+                        text = stringResource(id = R.string.converter_retry_message),
+                        style = TextStyle(
+                            fontFamily = montserratFont,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White,
+                            fontSize = dpToSp(dp = 13.dp),
+                            letterSpacing = 0.03.em
+                        ),
+                    )
+                }
+            }
         }
     }
     Row(

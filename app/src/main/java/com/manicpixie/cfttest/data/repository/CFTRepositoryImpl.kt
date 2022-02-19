@@ -23,4 +23,8 @@ class CFTRepositoryImpl @Inject constructor(
     override suspend fun getCurrencyByName(name: String): CurrencyEntity {
         return dao.getCurrencyByName(name)
     }
+
+    override suspend fun numberOfEntries(): Int {
+        return dao.numberOfEntries()
+    }
 }
