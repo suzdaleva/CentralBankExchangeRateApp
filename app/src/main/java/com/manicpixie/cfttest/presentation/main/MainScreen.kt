@@ -66,7 +66,10 @@ fun MainScreen(
             modifier = Modifier
                 .drawColoredShadow(color = Blue, shape = "circle")
                 .size(60.dp)
-        ) { Box(modifier = Modifier.clip(CircleShape).size(60.dp).background(brush = fabGradient), contentAlignment = Alignment.Center) {
+        ) { Box(modifier = Modifier
+            .clip(CircleShape)
+            .size(60.dp)
+            .background(brush = fabGradient), contentAlignment = Alignment.Center) {
             Icon(painter = if(currentScreenIndex.value == 0)
             painterResource(id = R.drawable.refresh_icon) else painterResource(id = R.drawable.equals_icon),
                 contentDescription = "FAB", tint = Color.White)}
@@ -87,7 +90,7 @@ fun MainScreen(
 
         }
         else{
-            converterViewModel.filterCurrencies("Доллар США")
+            converterViewModel.filterCurrencies(converterViewModel.currentCurrency.value.name)
             ConverterScreen(expandBackground = backgroundExpanded, onClick = {currentScreenIndex.value = 0})
             backgroundExpanded = true
         }

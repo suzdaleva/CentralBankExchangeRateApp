@@ -1,14 +1,17 @@
 package com.manicpixie.cfttest.presentation.converter
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manicpixie.cfttest.domain.model.Currency
+import com.manicpixie.cfttest.domain.use_case.CheckIfDatabaseIsEmptyUseCase
 import com.manicpixie.cfttest.domain.use_case.GetCurrencyByNameUseCase
 
 import com.manicpixie.cfttest.presentation.currencies_list.TextFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
 
@@ -19,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConverterViewModel @Inject constructor(
-    private val getCurrencyByNameUseCase: GetCurrencyByNameUseCase
+    private val getCurrencyByNameUseCase: GetCurrencyByNameUseCase,
+    private val checkIfDatabaseIsEmptyUseCase: CheckIfDatabaseIsEmptyUseCase
 ): ViewModel(){
 
     private var job: Job? = null
@@ -35,19 +39,21 @@ class ConverterViewModel @Inject constructor(
     private val _currentResult = mutableStateOf(0.0)
     val currentResult : State<Double> = _currentResult
 
-    private val _inputValue = mutableStateOf(
-        TextFieldState(
-            hint = "0.0"
-        )
-    )
+    private val _inputValue = mutableStateOf(TextFieldState(hint = "0.0"))
     val inputValue: State<TextFieldState> = _inputValue
+
+    private val _isDatabaseEmpty = mutableStateOf(true)
+    val isDatabaseEmpty: State<Boolean> = _isDatabaseEmpty
 
     fun filterCurrencies(name: String) {
         cancelJob()
         job = viewModelScope.launch {
-            _currentCurrency.value = getCurrencyByNameUseCase(name)
+            _isDatabaseEmpty.value = checkIfDatabaseIsEmptyUseCase()
+            if(!isDatabaseEmpty.value) {
+            _currentCurrency.value = getCurrencyByNameUseCase(name)}
         }
     }
+
 
 
     fun onEvent(event: ConverterEvent) {
