@@ -6,6 +6,8 @@
     <string name="retry">Попробовать снова</string>
     <string name="empty_search_message">МЫ НИЧЕГО НЕ\nНАШЛИ</string>
     <string name="try_another_request">Попробуйте другой запрос</string>
+    <string name="converter_error_message">АКТУАЛЬНЫЕ\nДАННЫЕ\nОТСУТСТВУЮТ</string>
+    <string name="converter_retry_message">Нужно  восстановить соединение\nи перезагрузить список валют</string>
     <string name="exchange_rate">КУРС ВАЛЮТ</string>
     <string name="central_bank">Центрального Банка Российской Федерации</string>
 </resources>
