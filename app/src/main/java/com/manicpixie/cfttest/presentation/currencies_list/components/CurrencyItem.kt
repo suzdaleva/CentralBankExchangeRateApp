@@ -105,7 +105,7 @@ fun CurrencyItem(
                                 contentDescription = "arrow")
                             Spacer(modifier = Modifier.width(3.dp))
                             Text(
-                                text = "${change.toString().substring(0,6)}",
+                                text = "${change.toString().substring(0,5)}",
                                 fontSize = dpToSp(dp = 15.dp),
                                 style = MaterialTheme.typography.h3,
                                 color = DarkGray
